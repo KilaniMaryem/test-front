@@ -1,0 +1,11 @@
+<div *ngFor="let commentaire of article.commentaires">
+    <p>{{ commentaire.contenu }}</p>
+  </div>
+  
+  <form (submit)="ajouterCommentaire()">
+    <label for="newComment">Commentaire:</label>
+    <textarea id="newComment" [(ngModel)]="newComment" required name="newComment"></textarea>
+    <br><br>
+    <button type="submit">Ajouter Commentaire</button>
+  </form>
+  

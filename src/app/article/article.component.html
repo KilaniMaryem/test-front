@@ -1,0 +1,48 @@
+  <div *ngFor="let article of articles">
+    <h2>{{ article.titre }}</h2>
+    <p>{{ article.contenu }}</p>
+    <p>Auteur: {{ article.auteur?.adminname || 'Auteur inconnu' }} </p>
+    <p>Likes: {{ article.likes }}</p>
+    <p>Note: {{ article.noteGenerale }}</p>
+
+    <button (click)="likeArticle(article.idArticle)">Like</button>
+    <button (click)="toggleCommentForm(article.idArticle)">Commenter</button>
+    <button (click)="toggleRatingForm(article.idArticle)">Noter</button>
+
+    <app-commentaire
+    *ngIf="article.idArticle === commentFormArticleId"
+    [article]="article"
+    (commentaireAjoute)="ajouterCommentaire($event)"
+  ></app-commentaire>
+  <div *ngIf="ratingFormArticleId === article.idArticle">
+    <label for="ratingInput">Saisir la note :</label>
+    <input type="number" id="ratingInput" name="ratingInput" [(ngModel)]="ratingInputValue" required>
+    <button (click)="noterArticle(article.idArticle, ratingInputValue)">Valider la note</button>
+  </div>
+   <!-- Afficher les commentaires -->
+   <div *ngIf="commentFormArticleId === article.idArticle">
+    <h3>Commentaires</h3>
+    <ul>
+      <li *ngFor="let commentaire of commentaires">
+        {{ commentaire.contenu }} - {{ commentaire.auteurCommentaire.username }}
+      </li>
+    </ul>
+  </div>
+    <hr>
+  </div>
+
+
+  <h1>Ajouter un nouvel article</h1>
+  <!-- Formulaire d'ajout d'article -->
+  <form (submit)="addArticle()">
+    <label for="newTitle">Titre:</label>
+    <input type="text" id="newTitle" name="newTitle" [(ngModel)]="newArticle.titre" required>
+    <br><br>
+    <label for="newContent">Contenu:</label>
+    <textarea id="newContent" name="newContent" [(ngModel)]="newArticle.contenu" required></textarea>
+    <br><br>
+    <label for="newAuthor">Auteur:</label>
+    <input type="text" id="newAuthor" name="newAuthor" [(ngModel)]="newArticle.auteurname" required>
+    <br><br>
+    <button type="submit">Ajouter Article</button>
+  </form>
